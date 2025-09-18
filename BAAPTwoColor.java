@@ -13,7 +13,7 @@ public class BAAPTwoColor {
         return -1; // not resolved within Nmax
     }
 
-    // Does there exist a 2-coloring of {0..N-1} avoiding: color0 has k-AAP AND color1 has l-AAP?
+    // Checks if there exists a 2-coloring of {0..N-1} avoiding: color0 has k-AAP AND color1 has l-AAP?
     // Return true if such a coloring exists (i.e., still below the threshold).
     private static boolean existsCounterexample(int N, int k, int l) {
         int[] coloring = new int[N];
@@ -21,9 +21,9 @@ public class BAAPTwoColor {
         return dfs(0, N, k, l, coloring);
     }
 
-    // Backtrack: assign index idx -> color 0 or 1; prune if that color completes its forbidden AAP.
+    // Backtrack: assign index idx -> color 0 or 1; break if that color completes an AAP.
     private static boolean dfs(int idx, int N, int k, int l, int[] coloring) {
-        if (idx == N) return true; // built a full coloring avoiding both patterns
+        if (idx == N) return true; // built a complete coloring avoiding both patterns
 
         // Try color 0 then 1
         for (int c = 0; c <= 1; c++) {
@@ -40,7 +40,7 @@ public class BAAPTwoColor {
     }
 
     // --------- KAAP detectors ---------
-    // Public dispatcher: use a k=3 fast path; otherwise general.
+    // Dispatcher: use a k=3 fast path; otherwise general.
     private static boolean createsKAAP(int idx, int k, int color, int[] coloring) {
         if (k <= 2) return false;     // need at least 3 points to have two distinct gaps
         if (k == 3) return createsKAAP3(idx, color, coloring);
